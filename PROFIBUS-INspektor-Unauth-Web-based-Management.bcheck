@@ -1,0 +1,23 @@
+metadata:
+    language: v1-beta
+    name: "Unauthenticated PROFIBUS-INspektor Web-based Management"
+    description: "Test for exposed PROFIBUS-INspektor Web-based Management"
+    author: "Ewerson Guimaraes aka Crash"
+		tags: "PROFIBUS INspektor"
+
+run for each:
+     potential_path =
+     "/templates/config/system/network.tpl"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if {check.response.status_code} is "200" and "config_system_network_address" in {check.response.body} then
+        report issue:
+        	  severity: high
+            confidence: certain
+            detail: "Unauthenticated PROFIBUS-INspektor Web-based Management"
+            remediation: "Enable the authentication"
+    end if
