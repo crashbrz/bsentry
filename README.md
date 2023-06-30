@@ -4,7 +4,7 @@
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/crashbrz/bsentry)
 ![GitHub last commit](https://img.shields.io/github/last-commit/crashbrz/bsentry)
 
-# bsentry
+# Bsentry
 BSentry is a comprehensive collection of additional security checks designed to enhance your Burp Suite experience. Leveraging the power of BCheck, BSentry offers a wide range of specialized inspections to bolster your web application security assessments. BSentry provides an arsenal of checks to identify weaknesses and strengthen your applications, from detecting common vulnerabilities to uncovering advanced attack vectors. 
 
 ### Installation ###
