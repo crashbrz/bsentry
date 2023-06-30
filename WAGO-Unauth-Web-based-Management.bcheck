@@ -1,0 +1,23 @@
+metadata:
+    language: v1-beta
+    name: "Unauthenticated WAGO Web-based Management"
+    description: "Test for exposed WAGO Web-based Management"
+    author: "Ewerson Guimaraes aka Crash"
+		tags: "WAGO"
+
+run for each:
+     potential_path =
+     "/webserv/cplcfg/state.ssi"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "Coupler details" in {check.response.body} then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: "Unauthenticated WAGO Web-based Management"
+            remediation: "Enable the authentication on Security Menu"
+    end if
