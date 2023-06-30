@@ -1,0 +1,23 @@
+metadata:
+    language: v1-beta
+    name: "Unauthenticated Lexmark Web-based Management"
+    description: "Test for exposed Lexmark Web-based Management"
+    author: "Ewerson Guimaraes aka Crash"
+		tags: "Lexmark"
+
+run for each:
+     potential_path =
+     "/cgi-bin/dynamic/printer/config/secure/authsetup.html"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "Kerberos 5" in {check.response.body} then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: "Unauthenticated Lexmark Web-based Management"
+            remediation: "Enable the authentication on Security Menu"
+    end if
