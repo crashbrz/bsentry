@@ -1,0 +1,83 @@
+metadata:
+    language: v1-beta
+    name: "CRLF"
+    description: "CRLF detected."
+    author: "Milad Fadavvi"
+    tags: "injection,crlf,header"
+
+run for each:
+    potential_path =
+        "/%0AHeader-Test:Bo0oq",
+        "/%0A%20Header-Test:Bo0oq",
+        "/%20%0AHeader-Test:Bo0oq",
+        "/%23%OAHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8D%0AHeader-Test:Bo0oq",
+        "/%3F%0AHeader-Test:Bo0oq",
+        "/crlf%0AHeader-Test:Bo0oq",
+        "/crlf%0A%20Header-Test:Bo0oq",
+        "/crlf%20%0AHeader-Test:Bo0oq",
+        "/crlf%23%OAHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8D%0AHeader-Test:Bo0oq",
+        "/crlf%3F%0AHeader-Test:Bo0oq",
+        "/%0DHeader-Test:Bo0oq",
+        "/%0D%20Header-Test:Bo0oq",
+        "/%20%0DHeader-Test:Bo0oq",
+        "/%23%0DHeader-Test:Bo0oq",
+        "/%23%0AHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8D%0DHeader-Test:Bo0oq",
+        "/%3F%0DHeader-Test:Bo0oq",
+        "/crlf%0DHeader-Test:Bo0oq",
+        "/crlf%0D%20Header-Test:Bo0oq",
+        "/crlf%20%0DHeader-Test:Bo0oq",
+        "/crlf%23%0DHeader-Test:Bo0oq",
+        "/crlf%23%0AHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8D%0DHeader-Test:Bo0oq",
+        "/crlf%3F%0DHeader-Test:Bo0oq",
+        "/%0D%0AHeader-Test:Bo0oq",
+        "/%0D%0A%20Header-Test:Bo0oq",
+        "/%20%0D%0AHeader-Test:Bo0oq",
+        "/%23%0D%0AHeader-Test:Bo0oq",
+        "/\r\nHeader-Test:Bo0oq",
+        "/ \r\n Header-Test:Bo0oq",
+        "/\r\n Header-Test:Bo0oq",
+        "/%5cr%5cnHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/%E5%98%8A%E5%98%8D%0D%0AHeader-Test:Bo0oq",
+        "/%3F%0D%0AHeader-Test:Bo0oq",
+        "/crlf%0D%0AHeader-Test:Bo0oq",
+        "/crlf%0D%0A%20Header-Test:Bo0oq",
+        "/crlf%20%0D%0AHeader-Test:Bo0oq",
+        "/crlf%23%0D%0AHeader-Test:Bo0oq",
+        "/crlf\r\nHeader-Test:Bo0oq",
+        "/crlf%5cr%5cnHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8DHeader-Test:Bo0oq",
+        "/crlf%E5%98%8A%E5%98%8D%0D%0AHeader-Test:Bo0oq",
+        "/crlf%3F%0D%0AHeader-Test:Bo0oq",
+        "/%0D%0A%09Header-Test:Bo0oq",
+        "/crlf%0D%0A%09Header-Test:Bo0oq",
+        "/%250AHeader-Test:Bo0oq",
+        "/%25250AHeader-Test:Bo0oq",
+        "/%%0A0AHeader-Test:Bo0oq",
+        "/%25%30AHeader-Test:Bo0oq",
+        "/%25%30%61Header-Test:Bo0oq",
+        "/%u000AHeader-Test:Bo0oq",
+        "//www.google.com/%2F%2E%2E%0D%0AHeader-Test:Bo0oq",
+        "//www.google.com/%2E%2E%2F%0D%0AHeader-Test:Bo0oq",
+        "//google.com/%2F..%0D%0AHeader-Test:Bo0oq"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "Header-Test" in {check.response.headers} then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: `Description. The term CRLF refers to Carriage Return (ASCII 13, \\r ) Line Feed (ASCII 10, \\n ). They're used to note the termination of a line, however, dealt with differently in today's popular Operating Systems.`
+            remediation: "Input validation"
+    end if
