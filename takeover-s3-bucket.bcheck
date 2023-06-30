@@ -3,6 +3,8 @@ metadata:
     name: "AWS S3 Bucket takeover"
     description: "Possible sub-domain takeover via AWS S3 bucket."
     tags: "passive,s3,takeover,cloud"
+    author: "Milad Fadavvi"
+
 
 given response then
     if "NoSuchBucket" in {latest.response} then
