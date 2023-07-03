@@ -1,0 +1,48 @@
+metadata:
+    language: v1-beta
+    name: "Unauthenticated Database Backup - WP Backup Migration File 1.2.8"
+    description: "WordPress Plugin Backup Migration 1.2.8 - Unauthenticated Database Backup"
+    author: "Rodrigo Favarini - aka Icebreack"
+		tags: "wordpress,backup"
+
+define:
+		    version_path = "/wp-content/plugins/backup-backup/readme.txt"
+		    config_path = "/wp-content/backup-migration/config.json"
+        log_path = "/wp-content/backup-migration/complete_logs.log"
+        detail = "Default Backup File Info Found - exploit: https://www.exploit-db.com/exploits/51445
+                   To download the backup file: 
+                   1- get the value of STORAGE::LOCAL::PATH in /wp-content/backup-migration/config.json
+                   2- get the BM_backup zip file found in /wp-content/backup-migration/complete_logs.log
+                   3- download:  <HOST>/wp-content/<1>/backups/<2> "
+
+given host then
+
+  send request called check:
+      method: "GET"
+      path: {version_path}
+
+  if "Stable tag: 1.2.8" in {check.response.body} then
+      
+      send request called check_config:
+        method: "GET"
+        path: {config_path}
+            
+      if "STORAGE::LOCAL::PATH" in {check_config.response.body} then
+
+        send request called check_log:
+            method: "GET"
+            path: {log_path}
+
+        if "[LOG]" in {check_log.response.body} and "BM_Backup_" in {check_log.response.body} then
+
+            report issue:
+              severity: high
+              confidence: certain
+              detail: `{detail}`
+              remediation: "Ensure your backup directories are not exposed."
+
+        end if
+
+    end if
+
+  end if
