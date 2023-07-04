@@ -12,3 +12,5 @@ Import the files on Burp Suite Pro directly.
 
 ### License ###
 Licensed under the SushiWare license. Check [docs/license.txt](docs/license.txt) for more information.
+
+![alt text](https://github.com/crashbrz/bsentry/blob/main/logo/BsentrynoBG.png?raw=true)
