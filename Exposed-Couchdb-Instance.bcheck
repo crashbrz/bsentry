@@ -1,0 +1,36 @@
+metadata:
+    language: v1-beta
+    name: "Exposed Couchdb Instance"
+    description: "Test for Exposed Couchdb Instance"
+    author: "Ewerson Guimaraes aka Crash"
+		tags: "couchdb"
+
+define: 
+     dbs_path = "/_all_dbs"
+
+run for each:
+     potential_path = "/"
+
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "{\"couchdb\":\"Welcome\",\"version\":" in {check.response.body} then
+        
+      			send request called dbcheck:
+						method: "GET"
+            path: {dbs_path}
+              
+            if {dbcheck.response.status_code} is "200" then
+            
+               report issue:
+               severity: high
+               confidence: certain
+               detail: `Extracted dbs from <HOST>/_all_dbs URL: {dbcheck.response.body}`
+               remediation: "Enable the authentication or restrict the access to the instance."
+			     
+           end if
+
+    end if
