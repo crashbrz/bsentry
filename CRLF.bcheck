@@ -74,13 +74,11 @@ given host then
         method: "GET"
         path: {potential_path}
 
-if "Header-Test" in {check.response.headers} and 
-			 	not ({check.response.headers} matches "Location:.*Header-Test:Bo0oq") and
-				not ({check.response.headers} matches "X-Amz-Error-Detail-Key:.*Header-Test:Bo0oq")
-				then
-report issue:
-    severity: high
-    confidence: certain
-    detail: `Description. The term CRLF refers to Carriage Return (ASCII 13, \\r ) Line Feed (ASCII 10, \\n ).\nThey're used to noting the termination of a line. However, dealt with differently in today's popular Operating Systems.`
-    remediation: "Input validation"
+if "Header-Test" in {check.response.headers} and {check.response.headers} matches "^Header-Test:Bo0oq" 
+	then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: `Description. The term CRLF refers to Carriage Return (ASCII 13, \\r ) Line Feed (ASCII 10, \\n ).\nThey're used to note the termination of a line, however, dealt with differently in today's popular Operating Systems.`
+            remediation: "Input validation"
 end if
