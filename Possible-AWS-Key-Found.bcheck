@@ -1,0 +1,15 @@
+metadata:
+    language: v1-beta
+    name: "Possible AWS Key Found"
+    description: "Looks in responses to see if there are leaked AWS Access Key IDs"
+    tags: "aws,key"
+	author: "Gustavo Roberto aka Robertux"
+
+given response then
+    if {latest.response} matches "([^A-Z0-9]|^)(AKIA|A3T|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{12,}" then
+        report issue:
+            severity: high
+            confidence: firm
+            detail: "Leaked AWS Access Key ID."
+            remediation: "Replace your keys and ensure keys are no longer revealed."
+    end if
