@@ -7,10 +7,10 @@ metadata:
 
 
 given response then
-    if "NoSuchBucket" in {latest.response} then
+    if "NoSuchBucket" in {latest.response} and "BucketName:" in {latest.response} then
         report issue:
             severity: high
             confidence: firm
-            detail: "S3 buckets might be configured as website hosting to serve static content as web servers. You can take it over!  more info --> https://github.com/EdOverflow/can-i-take-over-xyz/issues/36"
+            detail: "S3 buckets might be configured as website hosting to serve static content as web servers. You can take it over!\nmore info --> https://github.com/EdOverflow/can-i-take-over-xyz/issues/36"
             remediation: "Delete the related DNS record."
     end if

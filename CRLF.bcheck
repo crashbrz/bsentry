@@ -74,10 +74,11 @@ given host then
         method: "GET"
         path: {potential_path}
 
-    if "Header-Test" in {check.response.headers} then
+if "Header-Test" in {check.response.headers}
+	then
         report issue:
             severity: high
-            confidence: certain
-            detail: `Description. The term CRLF refers to Carriage Return (ASCII 13, \\r ) Line Feed (ASCII 10, \\n ). They're used to note the termination of a line, however, dealt with differently in today's popular Operating Systems.`
+            confidence: firm
+            detail: `POSSIBILITY OF FALSE POSITIVE!\nThe term CRLF refers to Carriage Return (ASCII 13, \\r ) Line Feed (ASCII 10, \\n ).\nThey're used to note the termination of a line, however, dealt with differently in today's popular Operating Systems.`
             remediation: "Input validation"
-    end if
+end if
