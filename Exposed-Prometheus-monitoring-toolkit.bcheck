@@ -1,0 +1,38 @@
+metadata:
+    language: v1-beta
+    name: "Exposed Prometheus monitoring and alerting toolkit"
+    description: "Exposed Prometheus monitoring and alerting toolkit"
+    author: "Ewerson Guimaraes aka Crash"
+		tags: "prometheus,go"
+
+
+run for each:
+     potential_path = "/status"
+     debug_path = "/debug/pprof/" 
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+									
+
+    if {check.response.status_code} is "200" and "Prometheus Time Series Collection and Processing Server" in {check.response.body} then
+					
+			send request called debug_check:
+        method: "GET"
+        path: {debug_path}
+					if {debug_check.response.status_code} is "200" and "full goroutine stack dump" in {debug_check.response.body} then
+
+            report issue:
+          	  severity: high
+              confidence: firm
+              detail: `Exposed Prometheus Monitoring and Debug Feature. Check the paths: {potential_path} and {debug_path}  `
+              remediation: "Access to Prometheus should be limited"
+         else then
+              report issue:
+          	  severity: high
+              confidence: firm
+              detail: "Exposed Prometheus monitoring and alerting toolkit"
+              remediation: "Access to Prometheus should be limited"
+         end if
+    end if
