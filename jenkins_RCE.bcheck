@@ -1,0 +1,30 @@
+
+metadata:
+    language: v1-beta
+    name: "Jenkins - Remote Code Execution"
+    description: "Jenkins is susceptible to a remote code execution vulnerability due to accessible script functionality.
+"
+    author: "Rodrigo Favarini aka Icebreack / Ewerson Guimaraes aka Crash"
+    tags: "jenkins,rce, "
+    
+
+run for each:
+    potential_path=
+        `/script/` , 
+        `/jenkins/script` 
+        
+    
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+     
+    if (("println(Jenkins.instance.pluginManager.plugins)" in {check.response.body} ))  and (( (  "Script Console"  in {check.response.body} ) or "Scriptconsole"  in {check.response.body} ))  and ( {check.response.status_code} is "200")  then
+        report issue:
+            severity: critical  
+            confidence: certain
+            detail: "['https://hackerone.com/reports/403402', 'https://medium.com/@gokulsspace/the-30000-bounty-affair-3f025ee6b834']"
+            remediation: ""
+    end if
+    
