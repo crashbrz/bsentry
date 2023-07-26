@@ -1,0 +1,28 @@
+
+metadata:
+    language: v1-beta
+    name: "Detect Jenkins in Debug Mode with Stack Traces Enabled"
+    description: "Module identified that the affected host is running an instance of Jenkins in debug mode, as a result stack traces are enabled."
+    author: "Rodrigo Favarini aka Icebreack / Ewerson Guimaraes aka Crash"
+    tags: "jenkins, stack trace"
+    
+
+run for each:
+    potential_path=
+        `/adjuncts/3a890183/` 
+        
+    
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+     
+    if (( (  "java.lang.StringIndexOutOfBoundsException"  in {check.response.body} ) and "String index out of range"  in {check.response.body} ))  and ( {check.response.status_code} is "500")  then
+        report issue:
+            severity: low  
+            confidence: certain
+            detail: "['https://hackerone.com/reports/221833']"
+            remediation: ""
+    end if
+    
