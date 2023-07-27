@@ -1,0 +1,25 @@
+metadata:
+    language: v1-beta
+    name: "Ivanti Endpoint Manager Mobile - Remote Unauthenticated API Access"
+    description: "Ivanti Endpoint Manager Mobile - Remote Unauthenticated API Access"
+    author: "Ewerson Guimaraes aka Crash / Rodrigo Favarini aka Icebreack"
+    tags: "Unauthenticated,API,Endpoint Manager Mobile"
+
+run for each:
+     potential_path =
+     "/mifs/c/windows/api/v2/device/registration"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "/mifs/css/windowsAllAuth.css?11.8\"" in {check.response.body}
+    or "/mifs/css/windowsAllAuth.css?11.9\"" in {check.response.body}
+    or "/mifs/css/windowsAllAuth.css?11.10\"" in {check.response.body} then
+        report issue:
+            severity: high
+            confidence: tentative
+            detail: "CVE-2023-35078 - Ivanti Endpoint Manager Mobile - Remote Unauthenticated API Access - https://www.rapid7.com/blog/post/2023/07/26/etr-cve-2023-35078-critical-api-access-vulnerability-ivanti-in-endpoint-manager-mobile/ - https://mastodon.social/@leakix/110780694038363734 "
+            remediation: "Ivanti has released the following patches to remediate the issue"
+    end if
