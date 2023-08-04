@@ -1,0 +1,22 @@
+metadata:
+    language: v1-beta
+    name: "MobileIron Core Unauthenticated API Access - CVE-2023-35082"
+    description: "MobileIron Core Unauthenticated API Access - Version 11.2 and below"
+    author: "Ewerson Guimaaes aka Crash"
+    tags: "Unauthenticated,API,mobileiron"
+
+run for each:
+        potential_path = "/mifs/asfV3/api/v2/ping"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if {check.response.body} matches "\b(11\.([0-2])|[1-9].[0-9]|10(?:\.0)?)" and "vspVersion" in {check.response.body} then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: "MobileIron Core Unauthenticated API Access"
+            remediation: "Update for the lastversion of MobileIron"
+    end if
