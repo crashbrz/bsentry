@@ -15,3 +15,7 @@ Import the files on Burp Suite Pro directly.
 Licensed under the SushiWare license. Check [docs/license.txt](docs/license.txt) for more information.
 
 ![alt text](https://github.com/crashbrz/bsentry/blob/main/logo/BsentrynoBG.png?raw=true)
+
+### Activity ###
+
+![Alt](https://repobeats.axiom.co/api/embed/4b79fe2fb2ddbbee47ebff856c3b0bf31a12fde5.svg "Repobeats analytics image")
