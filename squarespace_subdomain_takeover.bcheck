@@ -1,0 +1,24 @@
+metadata:
+    language: v1-beta
+    name: "Squarespace subdomain takeover"
+    description: "Possible sub-domain takeover | Squarespace"
+    tags: "passive,Squarespace,takeover,cloud"
+    author: "Ewerson Guimaraes aka Crash"
+
+
+run for each:
+     potential_path =
+     "/"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {potential_path}
+
+    if "This domain has been mapped to Squarespace, but it has not yet been claimed by a website" in {check.response.body} then
+        report issue:
+            severity: high
+            confidence: certain
+            detail: "Squarespace subdomain takeover"
+            remediation: "Remove the DNS record"
+    end if
